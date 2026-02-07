@@ -83,7 +83,12 @@ def cart_view(request):
 
 @login_required
 def cart_remove(request, product_id):
-    """Remove a product from the cart"""
+    """Remove a product from the cart.
+
+    :param request: Django HttpRequest.
+    :param product_id: Product identifier to remove.
+    :return: Redirect response.
+    """
     if request.method == 'POST':
         cart = Cart(request)
         product = get_object_or_404(Product, prod_id=product_id)
