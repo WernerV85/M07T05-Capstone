@@ -20,7 +20,11 @@ from django.shortcuts import render
 
 
 def home(request):
-    """Homepage with login and register buttons"""
+    """Render the homepage.
+
+    :param request: Django HttpRequest.
+    :return: Rendered homepage.
+    """
     return render(request, 'home.html')
 
 
