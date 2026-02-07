@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if store %}Edit Store{% else %}Create Store{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{% if store %}Edit Store{% else %}Create New Store{% endif %}</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% if form and form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="store_name">Store Name:</label>
+            <input type="text" name="store_name" id="store_name" class="form-control{% if form and form.store_name.errors %} is-invalid{% endif %}" value="{% if form %}{{ form.store_name.value|default:'' }}{% elif store %}{{ store.store_name }}{% endif %}" required maxlength="100">
+            {% if form and form.store_name.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.store_name.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="store_description">Description:</label>
+            <textarea name="store_description" id="store_description" class="form-control{% if form and form.store_description.errors %} is-invalid{% endif %}" rows="4">{% if form %}{{ form.store_description.value|default:'' }}{% elif store %}{{ store.store_description }}{% endif %}</textarea>
+            {% if form and form.store_description.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.store_description.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="store_category">Category:</label>
+            <select name="store_category" id="store_category" class="form-control{% if form and form.store_category.errors %} is-invalid{% endif %}" required>
+                <option value="">Select a category</option>
+                {% if form %}
+                    {% for value, label in form.store_category.field.choices %}
+                        {% if value %}
+                        <option value="{{ value }}" {% if form.store_category.value == value %}selected{% endif %}>{{ label }}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+            {% if form and form.store_category.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.store_category.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">{% if store %}Update{% else %}Create{% endif %} Store</button>
+        <a href="{% if store %}{% url 'store_detail' store.store_id %}{% else %}{% url 'store_list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+        
+        {% if store %}
+        <hr class="my-4">
+        <div class="mt-4">
+            <h4>Products</h4>
+            <p class="text-muted">Manage products for this store</p>
+            <a href="{% url 'product_create' %}" class="btn btn-success">
+                ➕ Add Product
+            </a>
+        </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

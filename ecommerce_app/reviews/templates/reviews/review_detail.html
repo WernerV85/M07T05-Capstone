@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Review for {{ review.product.name }}</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">
+                Rating: 
+                {% for i in "12345" %}
+                    {% if forloop.counter <= review.rating %}
+                        <span class="text-warning">★</span>
+                    {% else %}
+                        <span class="text-muted">★</span>
+                    {% endif %}
+                {% endfor %}
+                {% if review.is_verified_purchase %}
+                <span class="badge badge-success ml-2">Verified Purchase</span>
+                {% endif %}
+            </h5>
+            <p class="card-text">{{ review.comment }}</p>
+            <hr>
+            <p><strong>Reviewer:</strong> {{ review.username }}</p>
+            <p><strong>Date:</strong> {{ review.created_at|date:"F d, Y" }}</p>
+            <p><strong>Product:</strong> <a href="{% url 'product_detail' review.product.prod_id %}">{{ review.product.name }}</a></p>
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a href="{% url 'review_list' %}" class="btn btn-secondary">Back to Reviews</a>
+        <a href="{% url 'product_detail' review.product.prod_id %}" class="btn btn-primary">View Product</a>
+    </div>
+</div>
+{% endblock %}

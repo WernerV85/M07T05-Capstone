@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if product %}Edit Product{% else %}Create Product{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{% if product %}Edit Product{% else %}Create New Product{% endif %}</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% if form and form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="name">Product Name:</label>
+            <input type="text" name="name" id="name" class="form-control{% if form and form.name.errors %} is-invalid{% endif %}" value="{% if form %}{{ form.name.value|default:'' }}{% elif product %}{{ product.name }}{% endif %}" required maxlength="100">
+            {% if form and form.name.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.name.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" class="form-control{% if form and form.description.errors %} is-invalid{% endif %}" rows="4" required>{% if form %}{{ form.description.value|default:'' }}{% elif product %}{{ product.description }}{% endif %}</textarea>
+            {% if form and form.description.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.description.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" name="price" id="price" class="form-control{% if form and form.price.errors %} is-invalid{% endif %}" step="0.01" min="0.01" value="{% if form %}{{ form.price.value|default:'' }}{% elif product %}{{ product.price }}{% endif %}" required>
+            {% if form and form.price.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.price.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="store_id">Store:</label>
+            <select name="store_id" id="store_id" class="form-control{% if form and form.store.errors %} is-invalid{% endif %}" required>
+                <option value="">Select a store</option>
+                {% for store in stores %}
+                <option value="{{ store.store_id }}" {% if form and form.store.value|stringformat:'s' == store.store_id|stringformat:'s' %}selected{% elif product and product.store.store_id == store.store_id %}selected{% endif %}>
+                    {{ store.store_name }}
+                </option>
+                {% endfor %}
+            </select>
+            {% if form and form.store.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.store.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">{% if product %}Update{% else %}Create{% endif %} Product</button>
+        <a href="{% if product %}{% url 'product_detail' product.prod_id %}{% else %}{% url 'product_list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

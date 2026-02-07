@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ product.name }}</h1>
+            <p class="lead">{{ product.description }}</p>
+            <h3 class="text-success">${{ product.price }}</h3>
+            <p><strong>Store:</strong> {{ product.store.store_name }}</p>
+            <p><strong>Category:</strong> {{ product.store.store_category }}</p>
+            
+            {% if user.is_authenticated and user.user_type == 'buyer' %}
+            <form method="post" action="{% url 'cart_add' product.prod_id %}" class="mt-3">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 100px;" id="quantity">
+                </div>
+                <button type="submit" class="btn btn-success">Add to Cart</button>
+            </form>
+            {% endif %}
+            
+            {% if user.is_authenticated and user.user_type == 'vendor' %}
+            <div class="mt-3">
+                <a href="{% url 'product_update' product.prod_id %}" class="btn btn-warning">Edit Product</a>
+                <a href="{% url 'product_delete' product.prod_id %}" class="btn btn-danger">Delete Product</a>
+            </div>
+            {% endif %}
+            
+            <div class="mt-4">
+                <a href="{% url 'review_create' %}?product_id={{ product.prod_id }}" class="btn btn-secondary">Write a Review</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a href="{% url 'product_list' %}" class="btn btn-secondary">Back to Products</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

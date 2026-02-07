@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Stores{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>All Stores</h1>
+    
+    {% if user.is_authenticated and user.user_type == 'vendor' %}
+    <a href="{% url 'store_create' %}" class="btn btn-primary mb-3">Create New Store</a>
+    {% endif %}
+    
+    <div class="row">
+        {% for store in stores %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ store.store_name }}</h5>
+                    <p class="card-text"><strong>Category:</strong> {{ store.store_category }}</p>
+                    <a href="{% url 'store_detail' store.store_id %}" class="btn btn-info">View Store</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No stores available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

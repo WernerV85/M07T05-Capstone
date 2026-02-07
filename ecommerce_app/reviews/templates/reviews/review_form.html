@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Write a Review{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Write a Review</h1>
+    
+    {% if product %}
+    <p>Reviewing: <strong>{{ product.name }}</strong></p>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        {% if form and form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if not product %}
+        <div class="form-group">
+            <label for="product_id">Product ID:</label>
+            <input type="number" name="product_id" id="product_id" class="form-control{% if form and form.product.errors %} is-invalid{% endif %}" value="{% if form %}{{ form.product.value|default:'' }}{% endif %}" min="1" step="1" required>
+            {% if form and form.product.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.product.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <input type="hidden" name="product_id" value="{{ product.prod_id }}">
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <div class="form-control{% if form and form.rating.errors %} is-invalid{% endif %}" style="height: auto;">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="rating" id="rating_5" value="5" {% if form and form.rating.value == '5' %}checked{% endif %} required>
+                    <label class="form-check-label" for="rating_5">5 - Excellent</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="rating" id="rating_4" value="4" {% if form and form.rating.value == '4' %}checked{% endif %} required>
+                    <label class="form-check-label" for="rating_4">4 - Good</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="rating" id="rating_3" value="3" {% if form and form.rating.value == '3' %}checked{% endif %} required>
+                    <label class="form-check-label" for="rating_3">3 - Average</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="rating" id="rating_2" value="2" {% if form and form.rating.value == '2' %}checked{% endif %} required>
+                    <label class="form-check-label" for="rating_2">2 - Poor</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="rating" id="rating_1" value="1" {% if form and form.rating.value == '1' %}checked{% endif %} required>
+                    <label class="form-check-label" for="rating_1">1 - Terrible</label>
+                </div>
+            </div>
+            {% if form and form.rating.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.rating.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="comment">Review:</label>
+            <textarea name="comment" id="comment" class="form-control{% if form and form.comment.errors %} is-invalid{% endif %}" rows="5" required>{% if form %}{{ form.comment.value|default:'' }}{% endif %}</textarea>
+            {% if form and form.comment.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.comment.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+        {% if product %}
+        <a href="{% url 'product_detail' product.prod_id %}" class="btn btn-secondary">Cancel</a>
+        {% else %}
+        <a href="{% url 'review_list' %}" class="btn btn-secondary">Cancel</a>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

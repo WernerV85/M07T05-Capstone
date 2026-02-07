@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ store.store_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ store.store_name }}</h1>
+    <p><strong>Category:</strong> {{ store.store_category }}</p>
+    {% if store.store_description %}
+    <p><strong>Description:</strong> {{ store.store_description }}</p>
+    {% endif %}
+    
+    {% if user.is_authenticated and user.user_type == 'vendor' %}
+    <div class="mb-3">
+        <a href="{% url 'store_update' store.store_id %}" class="btn btn-warning">Edit Store</a>
+        <a href="{% url 'store_delete' store.store_id %}" class="btn btn-danger">Delete Store</a>
+    </div>
+    {% endif %}
+    
+    <h3 class="mt-4">Products in this Store</h3>
+    {% if user.is_authenticated and user.user_type == 'vendor' %}
+    <a href="{% url 'product_create' %}" class="btn btn-success mb-3">➕ Add Product</a>
+    {% endif %}
+    <div class="row">
+        {% for product in store.products.all %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                    <p class="card-text"><strong>Price: ${{ product.price }}</strong></p>
+                    <a href="{% url 'product_detail' product.prod_id %}" class="btn btn-info">View Product</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No products in this store yet.</p>
+        {% endfor %}
+    </div>
+    
+    <div class="mt-4">
+        <a href="{% url 'store_list' %}" class="btn btn-secondary">Back to Stores</a>
+    </div>
+</div>
+{% endblock %}

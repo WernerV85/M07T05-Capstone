@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout Confirmation{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Checkout Confirmation</h1>
+    
+    <div class="card">
+        <div class="card-header">
+            <h3>Order Summary</h3>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>${{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                        <td><strong>${{ cart.get_total_price }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-lg">Confirm Order</button>
+                <a href="{% url 'cart_view' %}" class="btn btn-secondary">Back to Cart</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
