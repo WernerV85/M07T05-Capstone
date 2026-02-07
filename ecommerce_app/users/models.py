@@ -21,6 +21,14 @@ from rest_framework import serializers
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
+        """Create and save a user with the given credentials.
+
+        :param username: Username for the new user.
+        :param email: Email address for the new user.
+        :param password: Plain-text password.
+        :param extra_fields: Additional fields for the user.
+        :return: Created User instance.
+        """
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
@@ -30,6 +38,14 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, email, password=None, **extra_fields):
+        """Create and save a superuser with the given credentials.
+
+        :param username: Username for the superuser.
+        :param email: Email address for the superuser.
+        :param password: Plain-text password.
+        :param extra_fields: Additional fields for the superuser.
+        :return: Created User instance.
+        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -73,14 +89,27 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name', 'user_type']
 
     def has_perm(self, perm, obj=None):
-        """Does the user have a specific permission?"""
+        """Check if the user has a specific permission.
+
+        :param perm: Permission codename.
+        :param obj: Optional object instance.
+        :return: True if the user has the permission.
+        """
         return self.is_superuser
 
     def has_module_perms(self, app_label):
-        """Does the user have permissions to view the app `app_label`?"""
+        """Check if the user can view the given app.
+
+        :param app_label: Django app label.
+        :return: True if the user has module permissions.
+        """
         return self.is_superuser
 
     def __str__(self):
+        """Return the display name for the user.
+
+        :return: Username string.
+        """
         return self.username
 
 
