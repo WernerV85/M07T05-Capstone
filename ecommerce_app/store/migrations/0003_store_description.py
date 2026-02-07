@@ -2,6 +2,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """Add description field to store model."""
 
     dependencies = [
         ('store', '0002_store_vendor'),
