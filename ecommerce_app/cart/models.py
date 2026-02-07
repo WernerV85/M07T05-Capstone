@@ -53,6 +53,10 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
+        """Return a readable label for the order item.
+
+        :return: Human-readable order item label.
+        """
         return (
             f'{self.quantity}x {self.product.name} '
             f'in Order {self.order.order_id}'
