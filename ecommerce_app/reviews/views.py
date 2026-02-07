@@ -21,20 +21,33 @@ from rest_framework.permissions import IsAuthenticated
 
 
 def review_list(request):
-    """List all reviews - accessible to all users"""
+    """List all reviews.
+
+    :param request: Django HttpRequest.
+    :return: Rendered review list page.
+    """
     reviews = Review.objects.all()
     return render(request, 'reviews/review_list.html', {'reviews': reviews})
 
 
 def review_detail(request, review_id):
-    """Get a single review by ID"""
+    """Display details for a single review.
+
+    :param request: Django HttpRequest.
+    :param review_id: Review identifier.
+    :return: Rendered review detail page.
+    """
     review = get_object_or_404(Review, pk=review_id)
     return render(request, 'reviews/review_detail.html', {'review': review})
 
 
 @login_required
 def review_create(request):
-    """Create a new review - authenticated users (typically buyers)"""
+    """Create a new review (authenticated users).
+
+    :param request: Django HttpRequest.
+    :return: Rendered form or redirect.
+    """
     from product.models import Product
     from cart.models import OrderItem
 
@@ -81,7 +94,11 @@ def review_create(request):
 
 @api_view(['GET'])
 def view_reviews(request):
-    """API endpoint to get all reviews in JSON format"""
+    """Return all reviews in JSON format.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with reviews.
+    """
     serializer = ReviewSerializer(Review.objects.all(), many=True)
     return JsonResponse(data=serializer.data, safe=False)
 
@@ -89,6 +106,11 @@ def view_reviews(request):
 @api_view(['GET'])
 @renderer_classes([XMLRenderer])
 def view_reviews_xml(request):
+    """Return all reviews in XML format.
+
+    :param request: Django HttpRequest.
+    :return: DRF Response with reviews in XML.
+    """
     serializer = ReviewSerializer(Review.objects.all(), many=True)
     return Response(data=serializer.data)
 
@@ -97,6 +119,11 @@ def view_reviews_xml(request):
 @authentication_classes([BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def add_review(request):
+    """Create a new review via the API.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with review data or errors.
+    """
     if request.user.id == request.data.get('user'):
         serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid():
