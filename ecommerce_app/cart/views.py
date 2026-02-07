@@ -40,7 +40,12 @@ def _parse_quantity(raw_value):
 
 @login_required
 def cart_add(request, product_id):
-    """Add a product to the cart - buyers only"""
+    """Add a product to the cart.
+
+    :param request: Django HttpRequest.
+    :param product_id: Product identifier to add.
+    :return: Redirect response.
+    """
     # Check if user is authenticated and is a buyer
     if request.user.user_type != 'buyer':
         messages.error(request, 'Only buyers can add items to cart')
