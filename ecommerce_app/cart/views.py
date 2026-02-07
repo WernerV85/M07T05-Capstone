@@ -100,7 +100,12 @@ def cart_remove(request, product_id):
 
 @login_required
 def cart_update(request, product_id):
-    """Update the quantity of a product in the cart"""
+    """Update the quantity of a product in the cart.
+
+    :param request: Django HttpRequest.
+    :param product_id: Product identifier to update.
+    :return: Redirect response.
+    """
     if request.method == 'POST':
         cart = Cart(request)
         product = get_object_or_404(Product, prod_id=product_id)
