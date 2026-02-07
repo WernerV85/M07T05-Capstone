@@ -11,10 +11,18 @@ logger = logging.getLogger(__name__)
 
 
 def _is_enabled() -> bool:
+    """Check if X integration is enabled.
+
+    :return: True when X integration is enabled.
+    """
     return bool(getattr(settings, 'X_TWEETS_ENABLED', False))
 
 
 def _has_credentials() -> bool:
+    """Check if all X credentials are configured.
+
+    :return: True when all required credentials are present.
+    """
     required = (
         getattr(settings, 'X_API_KEY', ''),
         getattr(settings, 'X_API_SECRET', ''),
@@ -25,12 +33,23 @@ def _has_credentials() -> bool:
 
 
 def _truncate(text: str, max_len: int = 280) -> str:
+    """Truncate text to the requested length.
+
+    :param text: Input text to truncate.
+    :param max_len: Maximum length for the output.
+    :return: Truncated string.
+    """
     if len(text) <= max_len:
         return text
     return text[: max_len - 1].rstrip() + '…'
 
 
 def _client():
+    """Create a Tweepy client with configured credentials.
+
+    :return: Tweepy Client instance.
+    :raises RuntimeError: If tweepy is not installed.
+    """
     if tweepy is None:
         raise RuntimeError('tweepy is not installed')
     return tweepy.Client(
@@ -42,6 +61,11 @@ def _client():
 
 
 def send_tweet(text: str) -> None:
+    """Send a tweet if integration is enabled.
+
+    :param text: Tweet content.
+    :return: None.
+    """
     if not _is_enabled():
         logger.info('X tweet skipped: X_TWEETS_ENABLED is false')
         return
@@ -56,6 +80,11 @@ def send_tweet(text: str) -> None:
 
 
 def tweet_new_store(store) -> None:
+    """Send a tweet announcing a new store.
+
+    :param store: Store instance.
+    :return: None.
+    """
     description = (store.store_description or '').strip()
     message = f"New store: {store.store_name}"
     if description:
@@ -64,6 +93,11 @@ def tweet_new_store(store) -> None:
 
 
 def tweet_new_product(product) -> None:
+    """Send a tweet announcing a new product.
+
+    :param product: Product instance.
+    :return: None.
+    """
     store_name = getattr(product.store, 'store_name', 'Store')
     description = (product.description or '').strip()
     message = f"New product at {store_name}: {product.name}"
