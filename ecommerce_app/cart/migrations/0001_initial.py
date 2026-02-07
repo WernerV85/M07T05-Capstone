@@ -6,6 +6,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """Initial migration for cart orders and items."""
 
     initial = True
 
