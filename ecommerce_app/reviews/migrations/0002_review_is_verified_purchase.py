@@ -4,6 +4,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """Add verification flag to review model."""
 
     dependencies = [
         ('reviews', '0001_initial'),
