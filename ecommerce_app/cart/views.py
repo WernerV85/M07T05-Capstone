@@ -251,6 +251,11 @@ def view_orders_xml(request):
 @authentication_classes([BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def add_order(request):
+    """Create a new order for the authenticated user.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with order data or errors.
+    """
     if request.user.id == request.data.get('user'):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
