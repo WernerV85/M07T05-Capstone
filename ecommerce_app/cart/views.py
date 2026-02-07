@@ -226,7 +226,11 @@ eCommerce Team
 
 @api_view(['GET'])
 def view_orders(request):
-    """API endpoint to get all orders in JSON format"""
+    """Return all orders in JSON format.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse containing orders.
+    """
     serializer = OrderSerializer(Order.objects.all(), many=True)
     return JsonResponse(data=serializer.data, safe=False)
 
