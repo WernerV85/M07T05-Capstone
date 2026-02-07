@@ -127,7 +127,11 @@ def cart_update(request, product_id):
 
 @login_required
 def cart_checkout(request):
-    """Checkout - send email with cart summary and clear cart"""
+    """Checkout and place the order.
+
+    :param request: Django HttpRequest.
+    :return: Rendered response or redirect.
+    """
     cart = Cart(request)
 
     if len(cart) == 0:
