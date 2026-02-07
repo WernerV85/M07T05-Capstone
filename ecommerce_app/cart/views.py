@@ -72,7 +72,11 @@ def cart_add(request, product_id):
 
 @login_required
 def cart_view(request):
-    """View the shopping cart"""
+    """Render the shopping cart view.
+
+    :param request: Django HttpRequest.
+    :return: Rendered cart page.
+    """
     cart = Cart(request)
     return render(request, 'cart/cart.html', {'cart': cart})
 
