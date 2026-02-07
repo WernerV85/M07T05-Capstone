@@ -238,6 +238,11 @@ def view_orders(request):
 @api_view(['GET'])
 @renderer_classes([XMLRenderer])
 def view_orders_xml(request):
+    """Return all orders in XML format.
+
+    :param request: Django HttpRequest.
+    :return: DRF Response containing orders in XML.
+    """
     serializer = OrderSerializer(Order.objects.all(), many=True)
     return Response(data=serializer.data)
 
