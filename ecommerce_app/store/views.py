@@ -24,20 +24,33 @@ from rest_framework.permissions import IsAuthenticated
 
 
 def store_list(request):
-    """List all stores - accessible to all users"""
+    """List all stores.
+
+    :param request: Django HttpRequest.
+    :return: Rendered store list page.
+    """
     stores = Store.objects.all()
     return render(request, 'store/store_list.html', {'stores': stores})
 
 
 def store_detail(request, store_id):
-    """Get a single store by ID"""
+    """Display details for a single store.
+
+    :param request: Django HttpRequest.
+    :param store_id: Store identifier.
+    :return: Rendered store detail page.
+    """
     store = get_object_or_404(Store, pk=store_id)
     return render(request, 'store/store_detail.html', {'store': store})
 
 
 @login_required
 def store_create(request):
-    """Create a new store - vendors only"""
+    """Create a new store (vendors only).
+
+    :param request: Django HttpRequest.
+    :return: Rendered form or redirect.
+    """
     # Check if user is a vendor
     if request.user.user_type != 'vendor':
         messages.error(request, 'Only vendors can create stores')
@@ -61,7 +74,12 @@ def store_create(request):
 
 @login_required
 def store_update(request, store_id):
-    """Update an existing store - vendors only"""
+    """Update an existing store (vendors only).
+
+    :param request: Django HttpRequest.
+    :param store_id: Store identifier.
+    :return: Rendered form or redirect.
+    """
     store = get_object_or_404(Store, pk=store_id)
 
     # Check if user is a vendor
@@ -88,7 +106,12 @@ def store_update(request, store_id):
 
 @login_required
 def store_delete(request, store_id):
-    """Delete a store - vendors only"""
+    """Delete a store (vendors only).
+
+    :param request: Django HttpRequest.
+    :param store_id: Store identifier.
+    :return: Rendered confirmation or redirect.
+    """
     store = get_object_or_404(Store, pk=store_id)
 
     # Check if user is a vendor
@@ -109,7 +132,11 @@ def store_delete(request, store_id):
 
 @api_view(['GET'])
 def view_stores(request):
-    """API endpoint to get all stores in JSON format"""
+    """Return all stores in JSON format.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with stores.
+    """
     serializer = StoreSerializer(Store.objects.all(), many=True)
     return JsonResponse(data=serializer.data, safe=False)
 
@@ -117,6 +144,11 @@ def view_stores(request):
 @api_view(['GET'])
 @renderer_classes([XMLRenderer])
 def view_stores_xml(request):
+    """Return all stores in XML format.
+
+    :param request: Django HttpRequest.
+    :return: DRF Response with stores in XML.
+    """
     serializer = StoreSerializer(Store.objects.all(), many=True)
     return Response(data=serializer.data)
 
@@ -125,6 +157,11 @@ def view_stores_xml(request):
 @authentication_classes([BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def add_store(request):
+    """Create a new store via the API.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with store data or errors.
+    """
     if request.user.user_type == 'vendor':
         serializer = StoreSerializer(data=request.data)
         if serializer.is_valid():
@@ -141,7 +178,12 @@ def add_store(request):
 
 @api_view(['GET'])
 def view_stores_by_vendor(request, vendor_id):
-    """API endpoint to get all stores for a specific vendor"""
+    """Return all stores for a specific vendor.
+
+    :param request: Django HttpRequest.
+    :param vendor_id: Vendor identifier.
+    :return: JsonResponse with stores.
+    """
     stores = Store.objects.filter(vendor_id=vendor_id)
     serializer = StoreSerializer(stores, many=True)
     return JsonResponse(data=serializer.data, safe=False)
@@ -149,7 +191,12 @@ def view_stores_by_vendor(request, vendor_id):
 
 @api_view(['GET'])
 def view_products_by_store(request, store_id):
-    """API endpoint to get all products for a specific store"""
+    """Return all products for a specific store.
+
+    :param request: Django HttpRequest.
+    :param store_id: Store identifier.
+    :return: JsonResponse with products.
+    """
     from product.models import Product, ProductSerializer
     products = Product.objects.filter(store_id=store_id)
     serializer = ProductSerializer(products, many=True)
