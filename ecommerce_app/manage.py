@@ -5,7 +5,10 @@ import sys
 
 
 def main():
-    """Run administrative tasks."""
+    """Run administrative tasks.
+
+    :return: None.
+    """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce_app.settings')
     try:
         from django.core.management import execute_from_command_line
