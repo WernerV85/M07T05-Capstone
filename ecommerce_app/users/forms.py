@@ -21,6 +21,11 @@ class RegistrationForm(forms.ModelForm):
         fields = ['username', 'email', 'first_name', 'last_name', 'user_type']
 
     def clean_password1(self):
+        """Validate the password strength.
+
+        :return: Validated password.
+        :raises ValidationError: If password does not meet requirements.
+        """
         password = self.cleaned_data.get('password1', '')
         validator = RegexValidator(
             regex=r'^(?=.*[A-Z])(?=.*\d).+$',
@@ -33,6 +38,10 @@ class RegistrationForm(forms.ModelForm):
         return password
 
     def clean(self):
+        """Validate matching passwords.
+
+        :return: Cleaned form data.
+        """
         cleaned_data = super().clean()
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
