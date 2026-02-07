@@ -63,6 +63,10 @@ class OrderItem(models.Model):
         )
 
     def get_total(self):
+        """Return the total price for this order item.
+
+        :return: Total price for this item.
+        """
         return self.quantity * self.price
 
 
