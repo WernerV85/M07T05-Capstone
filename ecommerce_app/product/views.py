@@ -23,20 +23,33 @@ from rest_framework.permissions import IsAuthenticated
 
 
 def product_list(request):
-    """List all products - accessible to all users"""
+    """List all products.
+
+    :param request: Django HttpRequest.
+    :return: Rendered product list page.
+    """
     products = Product.objects.all()
     return render(request, 'product/product_list.html', {'products': products})
 
 
 def product_detail(request, prod_id):
-    """Get a single product by ID"""
+    """Display details for a single product.
+
+    :param request: Django HttpRequest.
+    :param prod_id: Product identifier.
+    :return: Rendered product detail page.
+    """
     product = get_object_or_404(Product, pk=prod_id)
     return render(request, 'product/product_detail.html', {'product': product})
 
 
 @login_required
 def product_create(request):
-    """Create a new product - vendors only"""
+    """Create a new product (vendors only).
+
+    :param request: Django HttpRequest.
+    :return: Rendered form or redirect.
+    """
     from django.contrib import messages
     from store.models import Store
 
@@ -68,7 +81,12 @@ def product_create(request):
 
 @login_required
 def product_update(request, prod_id):
-    """Update an existing product - vendors only"""
+    """Update an existing product (vendors only).
+
+    :param request: Django HttpRequest.
+    :param prod_id: Product identifier.
+    :return: Rendered form or redirect.
+    """
     from django.contrib import messages
     from store.models import Store
 
@@ -107,7 +125,12 @@ def product_update(request, prod_id):
 
 @login_required
 def product_delete(request, prod_id):
-    """Delete a product - vendors only"""
+    """Delete a product (vendors only).
+
+    :param request: Django HttpRequest.
+    :param prod_id: Product identifier.
+    :return: Rendered confirmation or redirect.
+    """
     from django.contrib import messages
 
     product = get_object_or_404(Product, pk=prod_id)
@@ -134,7 +157,11 @@ def product_delete(request, prod_id):
 
 @api_view(['GET'])
 def view_products(request):
-    """API endpoint to get all products in JSON format"""
+    """Return all products in JSON format.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with products.
+    """
     serializer = ProductSerializer(Product.objects.all(), many=True)
     return JsonResponse(data=serializer.data, safe=False)
 
@@ -142,6 +169,11 @@ def view_products(request):
 @api_view(['GET'])
 @renderer_classes([XMLRenderer])
 def view_products_xml(request):
+    """Return all products in XML format.
+
+    :param request: Django HttpRequest.
+    :return: DRF Response with products in XML.
+    """
     serializer = ProductSerializer(Product.objects.all(), many=True)
     return Response(data=serializer.data)
 
@@ -150,6 +182,11 @@ def view_products_xml(request):
 @authentication_classes([BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def add_product(request):
+    """Create a new product via the API.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with product data or errors.
+    """
     if request.user.user_type == 'vendor':
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
