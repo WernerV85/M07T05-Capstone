@@ -31,6 +31,10 @@ class Order(models.Model):
     )
 
     def __str__(self):
+        """Return a readable label for the order.
+
+        :return: Human-readable order label.
+        """
         return f'Order {self.order_id} by {self.user.username}'
 
     class Meta:
