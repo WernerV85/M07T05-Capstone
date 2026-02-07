@@ -6,6 +6,7 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+    """Add vendor field to store model."""
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
