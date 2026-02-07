@@ -26,7 +26,11 @@ from rest_framework.permissions import IsAdminUser
 
 
 def register(request):
-    """User registration view"""
+    """Register a new user via the HTML form.
+
+    :param request: Django HttpRequest.
+    :return: Rendered response or redirect.
+    """
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -52,7 +56,11 @@ def register(request):
 
 
 def login_view(request):
-    """User login view"""
+    """Authenticate and log in a user.
+
+    :param request: Django HttpRequest.
+    :return: Rendered response or redirect.
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -73,14 +81,22 @@ def login_view(request):
 
 
 def logout_view(request):
-    """User logout view"""
+    """Log out the current user.
+
+    :param request: Django HttpRequest.
+    :return: Redirect response.
+    """
     logout(request)
     messages.success(request, 'You have been logged out successfully.')
     return redirect('home')
 
 
 def password_reset_request(request):
-    """Request password reset - sends email with reset link"""
+    """Send a password reset link to the user email.
+
+    :param request: Django HttpRequest.
+    :return: Rendered response or redirect.
+    """
     if request.method == 'POST':
         email = request.POST.get('email')
 
@@ -140,7 +156,13 @@ eCommerce Team
 
 
 def password_reset_confirm(request, uidb64, token):
-    """Confirm password reset with token validation"""
+    """Confirm password reset with token validation.
+
+    :param request: Django HttpRequest.
+    :param uidb64: Base64-encoded user id.
+    :param token: Password reset token.
+    :return: Rendered response or redirect.
+    """
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -193,7 +215,11 @@ def password_reset_confirm(request, uidb64, token):
 @authentication_classes([BasicAuthentication])
 @permission_classes([IsAdminUser])
 def view_users(request):
-    """API endpoint to get all users in JSON format - admin only"""
+    """Return all users in JSON format (admin only).
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with users.
+    """
     serializer = UserSerializer(User.objects.all(), many=True)
     return JsonResponse(data=serializer.data, safe=False)
 
@@ -203,13 +229,22 @@ def view_users(request):
 @authentication_classes([BasicAuthentication])
 @permission_classes([IsAdminUser])
 def view_users_xml(request):
+    """Return all users in XML format (admin only).
+
+    :param request: Django HttpRequest.
+    :return: DRF Response with users.
+    """
     serializer = UserSerializer(User.objects.all(), many=True)
     return Response(data=serializer.data)
 
 
 @api_view(['POST'])
 def register_user(request):
-    """API endpoint to register a new user"""
+    """Register a new user via the API.
+
+    :param request: Django HttpRequest.
+    :return: JsonResponse with user data or errors.
+    """
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         # Create user using UserManager to handle password hashing
