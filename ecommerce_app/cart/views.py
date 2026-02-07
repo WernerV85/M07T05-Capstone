@@ -27,6 +27,11 @@ from rest_framework.permissions import IsAuthenticated
 
 
 def _parse_quantity(raw_value):
+    """Parse quantity input into an integer.
+
+    :param raw_value: Raw value from request data.
+    :return: Parsed integer quantity or None if invalid.
+    """
     try:
         return int(raw_value)
     except (TypeError, ValueError):
