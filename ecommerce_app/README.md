@@ -70,7 +70,6 @@ This eCommerce application is built with Django 6.0.2 using traditional server-s
 - **Frontend**: HTML5, Bootstrap 4, Django Templates
 - **API Framework**: Django REST Framework 3.16.1+
 - **Authentication**: Django built-in + REST Framework Basic Auth
-- **App Server**: Gunicorn 22.0.0+
 - **Email Backend**: Console (development) / SMTP (production)
 - **Session Management**: Django sessions
 - **Architecture**: Hybrid - Server-side rendering + RESTful API
@@ -85,23 +84,6 @@ This eCommerce application is built with Django 6.0.2 using traditional server-s
 - MariaDB 12.1+ or MySQL 8.0+
 - pip (Python package manager)
 - Virtual environment (recommended)
-
-### Docker (Optional)
-
-Build and run the app with Docker:
-
-```bash
-docker build -t ecommerce_app ./ecommerce_app
-docker run -d --name ecommerce_app -p 8000:8000 ecommerce_app
-```
-
-Open http://127.0.0.1:8000/ after the container starts.
-
-Run the prebuilt image from Docker Hub:
-
-```bash
-docker run -d --name ecommerce_app -p 8000:8000 wernerval/capstone-final:v1
-```
 
 ### X (Twitter) API (Optional)
 
@@ -119,7 +101,7 @@ This project can post tweets when a new store or product is created. Tweets are 
 - `X_ACCESS_TOKEN=...`
 - `X_ACCESS_TOKEN_SECRET=...`
 
-## � Usage Guide
+## Usage Guide
 
 ### Access the Application
 - **Homepage**: http://127.0.0.1:8000/
