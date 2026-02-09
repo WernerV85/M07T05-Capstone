@@ -13,7 +13,7 @@ A modern Django-based eCommerce platform with traditional server-side rendering,
 
 ## 🎯 Overview
 
-This eCommerce application is built with Django 6.0.2 using traditional server-side rendering approach. The platform supports two user types:
+This eCommerce application is built with Django 5.2.x using traditional server-side rendering approach. The platform supports two user types:
 - **Buyers**: Can browse products, add items to cart, checkout, and leave reviews
 - **Vendors**: Can create stores, manage products
 
@@ -64,8 +64,8 @@ This eCommerce application is built with Django 6.0.2 using traditional server-s
 ## 🛠️ Technology Stack
 
 - **Framework**: Django 6.0.2
-- **Language**: Python 3.13
-- **Database**: MariaDB 12.1.2 (MySQL-compatible)
+- **Language**: Python 3.12
+- **Database**: MariaDB (MySQL-compatible)
 - **Database Driver**: mysqlclient 2.2.7+
 - **Frontend**: HTML5, Bootstrap 4, Django Templates
 - **API Framework**: Django REST Framework 3.16.1+
@@ -80,10 +80,19 @@ This eCommerce application is built with Django 6.0.2 using traditional server-s
 ## 📦 Installation
 
 ### Prerequisites
-- Python 3.13 or higher
-- MariaDB 12.1+ or MySQL 8.0+
+- Python 3.12 or higher
+- MariaDB or MySQL (if running without Docker)
 - pip (Python package manager)
 - Virtual environment (recommended)
+
+### Docker (Single Image)
+
+Run the app and embedded MariaDB with a single command:
+
+```
+docker run -d -p 8000:8000 --name ecommerce_app wernerval/capstone-final:latest
+
+```
 
 ### X (Twitter) API (Optional)
 
