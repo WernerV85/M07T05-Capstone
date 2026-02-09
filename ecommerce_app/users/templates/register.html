@@ -199,7 +199,7 @@
             <div class="form-group">
                 <label for="password1">Password:</label>
                 <input type="password" id="password1" name="password1" required minlength="8" pattern="(?=.*[A-Z])(?=.*\d).+" autocomplete="new-password">
-                <small style="color: #666; font-size: 12px;">Must contain at least one uppercase letter and one digit</small>
+                <small style="color: #666; font-size: 12px;">Must be at least 8 characters and include one uppercase letter and one digit.</small>
                 {% if form and form.password1.errors %}
                     <div class="error">
                         {% for error in form.password1.errors %}

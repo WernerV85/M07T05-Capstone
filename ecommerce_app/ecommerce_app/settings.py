@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'ecommerce_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ecommerce_db',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('DB_NAME', 'ecommerce_db'),
+        'USER': os.getenv('DB_USER', 'app'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'app'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '3306'),
         'OPTIONS': {
             'charset': 'utf8mb4',
         },
